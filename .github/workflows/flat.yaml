@@ -20,10 +20,14 @@ jobs:
         uses: denoland/setup-deno@main
         with:
           deno-version: v1.x
+      # get date to add file time 
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       # The third step is a Flat Action step. We fetch the data in the http_url and save it as downloaded_filename
       - name: Fetch data 
         uses: githubocto/flat@v3
         with:
           http_url: https://draft.premierleague.com/api/league/31922/details # The data to fetch every 5 minutes
-          downloaded_filename: League-of-nations.json # The http_url gets saved and renamed in our repository as btc-price.json
-          postprocess: postprocess.js # A postprocessing javascript or typescript file
+          downloaded_filename: League-of-nations-${{ steps.date.outputs.date }.json # The http_url gets saved and renamed in our repository as btc-price.json
+        #  postprocess: postprocess.js # A postprocessing javascript or typescript file
